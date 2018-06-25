@@ -19,6 +19,7 @@ import SettingsDialog from './SettingsDialog.jsx';
 import Notification from './Notification.jsx';
 import Crosshair from './Crosshair.jsx';
 import { connect } from '../store/Connect';
+import Dialog from './Dialog.jsx';
 
 const defaultTopWidgets = () => (
     <Fragment>
@@ -60,6 +61,8 @@ class Chart extends Component {
             topWidgets,
             showCountdown = false,
             chartContainerHeight,
+            hasOpenMenu,
+            ModalDialog
         } = this.props;
 
         const currentLang = lang || ((setting && setting.language) ? setting.language.key : 'en');
@@ -83,9 +86,17 @@ class Chart extends Component {
         }));
 
         return (
+            <div className={`smartcharts-${(typeof theme === 'string') ? theme : defaultTheme}`} >
+   
+             <div className={`${isMobile && hasOpenMenu ? 'cq-dialog-context':''}`} > 
+              {
+                ModalDialog && <ModalDialog/>
+              }
+              // In mobile devices, render active modals here instead of inside Menu
+             </div>
             <cq-context
                 ref={(root) => { this.root = root; }}
-                class={`smartcharts-${(typeof theme === 'string') ? theme : defaultTheme}`}
+                class={`smartcharts-${(typeof theme === 'string') ? theme : defaultTheme} `}
             >
                 <div className={`${currentMode} ${currentPosition}`}>
                     <div className="ciq-chart-area">
@@ -122,11 +133,13 @@ class Chart extends Component {
                     <Notification />
                 </div>
             </cq-context>
+         </div>
         );
     }
 }
 
-export default connect(({ chart, drawTools, studies, chartSetting, chartType }) => ({
+export default connect(({ chart, drawTools, studies, chartSetting,
+     chartTitle, chartType, comparison, view, share, timeperiod }) => ({
     contextPromise: chart.contextPromise,
     init: chart.init,
     destroy: chart.destroy,
@@ -137,4 +150,16 @@ export default connect(({ chart, drawTools, studies, chartSetting, chartType }) 
     chartPanelTop: chart.chartPanelTop,
     setting: chartSetting,
     chartContainerHeight: chart.chartContainerHeight,
+    hasOpenMenu: (
+        chartTitle.menu.open ||
+        chartType.menu.open ||
+        studies.menu.open ||
+        comparison.menu.open ||
+        drawTools.menu.open ||
+        view.menu.open ||
+        share.menu.open ||
+        timeperiod.menu.open ||
+        chartSetting.menu.open
+    ),
+    ModalDialog: chart.ActiveDialog ? chart.ActiveDialog.connect(Dialog) :null
 }))(Chart);

@@ -18,6 +18,7 @@ export default class DialogStore {
         if (this.open === true) { // close active dialog.
             if (activeDialog) { activeDialog.setOpen(false); }
             activeDialog = this;
+            this.mainStore.chart.setActiveDialog(activeDialog);
         } else {
             activeDialog = undefined;
         }

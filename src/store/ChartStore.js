@@ -1,5 +1,5 @@
 import ResizeObserver from 'resize-observer-polyfill';
-import { action, observable } from 'mobx';
+import { action, observable, computed } from 'mobx';
 import PendingPromise from '../utils/PendingPromise';
 import Context from '../components/ui/Context';
 import { stableSort } from './utils';
@@ -40,6 +40,12 @@ class ChartStore {
     @observable chartHeight;
     @observable chartContainerHeight;
     @observable isMobile = false;
+   
+    @observable ActiveDialog;
+    @action.bound setActiveDialog(value) {
+        this.ActiveDialog = value;
+    }
+    @computed get ModalDialog() {return this.ActiveDialog;}
 
     @action.bound setActiveSymbols(activeSymbols) {
         this.activeSymbols = this.processSymbols(activeSymbols);

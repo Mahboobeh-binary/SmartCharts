@@ -507,6 +507,15 @@ cq-lookup-input {
 		@include transition( background .60s 0s);
 	}
 }
+.ciq-modal {
+    position: fixed; // or absolute, whichever works
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+	z-index: 999999;
+	background: white;
+}
 
 /* Menus/Panel Toggles */
 cq-context {
@@ -516,6 +525,14 @@ cq-context {
 	font-family: $base-font;
 	font-size: $font-size-base;
 	overflow: hidden;
+	// &.cq-dialog-context{
+    //     position: fixed !important;
+    //     top: 0px !important;
+    //     bottom: 0px !important;
+    //     height: 100vh !important;
+    //     width: 100vw !important;
+    //     z-index: 9999 !important;
+    // }
     @include themify($themes) {
         background: themed('defaultMain');
     }

@@ -4,7 +4,6 @@ import DialogStore from './DialogStore';
 import Dialog from '../components/Dialog.jsx';
 
 const allMenues = [];
-
 export default class MenuStore {
     constructor(mainStore) {
         this.getContext = () => mainStore.chart.context;
@@ -17,6 +16,7 @@ export default class MenuStore {
 
     @computed get open() { return this.dialog.open; }
     @action.bound setOpen(val) { this.dialog.setOpen(val); }
+    @computed get modalDialog() {return this.dialog;};
 
     blurInput() {
         const stx = this.context.stx;
